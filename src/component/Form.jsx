@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { FormList } from "./FormList";
 
 export const Form = () => {
+  const [data, setData] = useState([]);
   const [formData, setformData] = useState({
     username: "",
     age: "",
@@ -10,22 +12,40 @@ export const Form = () => {
     isMarried: false,
   });
 
+  useEffect(() => {
+    getTodo();
+  }, []);
+
+  const getTodo = () => {
+    fetch(`http://localhost:3001/formdata`)
+      .then((res) => res.json())
+      .then((res) => {
+        setData(res);
+        console.log(data);
+      });
+  };
+
   const handleChange = (e) => {
     const { id, value, checked, type } = e.target;
     setformData({ ...formData, [id]: type === "checkbox" ? checked : value });
   };
-  const { username, age, isMarried, department, salary, address } = formData;
+  const { username, age, department, salary, address } = formData;
 
   const handlesubmit = (e) => {
     e.preventDefault();
     // console.log(formData );
-    
+    fetch("http://localhost:3001/formData", {
+      method: "Post",
+      body: JSON.stringify(formData),
+      headers: { "content-type": "application/json" },
+    }).then((res) => getTodo());
   };
 
   return (
     <>
       <form onSubmit={handlesubmit}>
         <h1>Form</h1>
+        Name:-
         <input
           id="username"
           type="text"
@@ -34,6 +54,7 @@ export const Form = () => {
           value={username}
         />
         <br />
+        Age:-
         <input
           id="age"
           type="number"
@@ -42,6 +63,7 @@ export const Form = () => {
           value={age}
         />
         <br />
+        Address:-
         <input
           id="address"
           type="text"
@@ -66,6 +88,7 @@ export const Form = () => {
           </select>
         </label>
         <br />
+        Salary:-
         <input
           id="salary"
           type="number"
@@ -78,8 +101,14 @@ export const Form = () => {
           Marital State :-
           <input type="checkbox" onChange={handleChange} id="isMarried" />
         </label>
+        <br />
         <input type="submit" value="submit" />
+        <br />
+        <br />
       </form>
+      <div>
+        <FormList data={data}/>
+      </div>
     </>
   );
 };

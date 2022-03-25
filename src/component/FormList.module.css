@@ -1,0 +1,29 @@
+*{
+    padding: 0%;
+    margin: 0%;
+}
+
+.component{
+    border: 5px solid black;
+    align-items: center;
+    /* width: 100%; */
+}
+table{
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid black;
+    font-size: 150%;
+    text-align: center;
+}
+
+
+th{
+    border: 2px solid black;
+    width: 5%;
+    height: 10vh;
+}
+td{
+    border: 2px solid black;
+    width: 10%;
+    height: 15vh;
+}
